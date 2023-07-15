@@ -1,4 +1,4 @@
-const Button = ({ label }) => {
+const Button = ({ label, handleClick }) => {
   return (
     <button
       className="text-white 
@@ -9,7 +9,11 @@ const Button = ({ label }) => {
     bg-neutral-700 
     mb-8
     hover:text-neutral-300
-    hover:bg-black"
+    hover:bg-black
+     w-full
+     z-10
+    "
+      onClick={handleClick}
     >
       {label}
     </button>

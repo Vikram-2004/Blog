@@ -1,8 +1,10 @@
-const Input = ({ label, type }) => {
+const Input = ({ label, type, onChange, value }) => {
   return (
     <>
       <input
         type={type}
+        onChange={onChange}
+        value={value}
         className="
     block
     rounded-lg
