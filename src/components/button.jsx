@@ -1,4 +1,4 @@
-const Button = ({ label, onClick, width }) => {
+const Button = ({ label, onClick }) => {
   return (
     <button
       className="text-white 
