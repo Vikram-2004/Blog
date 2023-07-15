@@ -2,15 +2,15 @@
 import Input from "@/components/Input";
 import { auth, googleProvider } from "../../../config/firebase";
 import {
-  createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   signInWithPopup,
+  signOut,
 } from "firebase/auth";
 import { addDoc, collection } from "firebase/firestore";
 import { useState } from "react";
 import Link from "next/link";
 import Button from "@/components/button";
-
+console.log(auth?.currentUser);
 const Page = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -20,6 +20,28 @@ const Page = () => {
     setIsHidden((currentValue) => {
       return currentValue === "password" ? "text" : "password";
     });
+  };
+  const signIn = async () => {
+    try {
+      await signInWithEmailAndPassword(auth, email, password);
+      console.log(email, password);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+  const signInWithGoogle = async () => {
+    try {
+      await signInWithPopup(auth, googleProvider);
+    } catch (ere) {
+      console.error(ere);
+    }
+  };
+  const logout = async () => {
+    try {
+      await signOut(auth);
+    } catch (err) {
+      console.error(err);
+    }
   };
 
   return (
@@ -35,18 +57,20 @@ const Page = () => {
               label="email"
               type="email"
               onChange={(e) => setEmail(e.target.value)}
+              value={email}
             />
             <Input
               label="password"
               type={isHidden}
               onChange={(e) => setPassword(e.target.value)}
+              value={password}
             />
           </div>
           <div className="flex justify-center">
-            <Button label="Sign In" />
+            <Button label="Sign In" onClick={signIn} />
           </div>
           <div className="flex justify-center">
-            <Button label="Sign In With Google" />
+            <Button label="Sign In With Google" onClick={signInWithGoogle} />
           </div>
           <p className="text-white text-center">
             Dont have an account?
@@ -57,6 +81,7 @@ const Page = () => {
         </div>
       </div>
       <button onClick={handleHidden}> clickme</button>
+      <button onClick={logout}>logout</button>
     </div>
   );
 };

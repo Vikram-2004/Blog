@@ -38,12 +38,16 @@ const Page = () => {
   };
   const signIn = async () => {
     try {
-      console.log(email, password);
-      await createUserWithEmailAndPassword(auth, email, password);
-      await addDoc(usersCollectionRef, {
-        uid: auth?.currentUser?.uid,
-        username: userName,
-      });
+      if (password.length >= 8) {
+        console.log(email, password);
+        await createUserWithEmailAndPassword(auth, email, password);
+        await addDoc(usersCollectionRef, {
+          uid: auth?.currentUser?.uid,
+          username: userName,
+        });
+      } else {
+        alert("password musht have more than or equals to 8 characters");
+      }
     } catch (error) {
       console.log(error);
     }
@@ -78,20 +82,16 @@ const Page = () => {
             />
             <Input
               label="password"
-              type="password"
+              type={isHidden}
               onChange={(e) => setPassword(e.target.value)}
               value={password}
             />
           </div>
           <div className="flex justify-center">
-            <div onClick={signIn} className="w-[85%] ">
-              <Button label="Register" />
-            </div>
+            <Button label="Register" onClick={signIn} />
           </div>
           <div className="flex justify-center">
-            <div onClick={signInGoogle} className="w-[85%]">
-              <Button label="Sign In With Google" />
-            </div>
+            <Button label="Sign In With Google" onClick={signInGoogle} />
           </div>
           <p className="text-white text-center">
             Have an account?
