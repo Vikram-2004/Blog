@@ -8,7 +8,6 @@ import {
   setPersistence,
   browserLocalPersistence,
 } from "firebase/auth";
-import { addDoc, collection } from "firebase/firestore";
 import { useState } from "react";
 import Link from "next/link";
 import Button from "@/components/button";
@@ -28,6 +27,7 @@ const Page = () => {
     try {
       await signInWithEmailAndPassword(auth, email, password);
       localStorage.setItem("isAuth", true);
+      console.log(auth?.currentUser);
       window.location.pathname = "/";
     } catch (err) {
       console.log(err);
@@ -37,14 +37,8 @@ const Page = () => {
     try {
       await setPersistence(auth, browserLocalPersistence);
       await signInWithPopup(auth, googleProvider);
-      console.log(auth?.currentUser);
-    } catch (err) {
-      console.error(err);
-    }
-  };
-  const logout = async () => {
-    try {
-      await signOut(auth);
+      localStorage.setItem("isAuth", true);
+      window.location.pathname = "/";
       console.log(auth?.currentUser);
     } catch (err) {
       console.error(err);
@@ -75,8 +69,12 @@ const Page = () => {
             />
           </div>
           <div className="flex justify-between">
-            <Button label="Sign In" onClick={signIn} />
-            <Button label="Google" onClick={signInWithGoogle} />
+            <div className="w-[45%] mb-8">
+              <Button label="Sign In" onClick={signIn} />
+            </div>
+            <div className="w-[45%] mb-8">
+              <Button label="Google" onClick={signInWithGoogle} />
+            </div>
           </div>
           <p className="text-white text-center ">
             Dont have an account?{"  "}
@@ -90,7 +88,6 @@ const Page = () => {
         </div>
       </div>
       <button onClick={handleHidden}> clickme</button>
-      <button onClick={logout}>logout</button>
     </div>
   );
 };

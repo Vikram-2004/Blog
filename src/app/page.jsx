@@ -1,7 +1,18 @@
 "use client";
+import Navbar from "@/components/Navbar";
 import { auth } from "@/config/firebase";
+import { useEffect } from "react";
 
 export default function Home() {
-  console.log(auth?.currentUser?.displayName);
-  return <div>hello {auth?.currentUser?.displayName}</div>;
+  useEffect(() => {
+    let authorization = localStorage.getItem("isAuth");
+    if (!authorization) {
+      window.location.pathname = "/login";
+    }
+  });
+  return (
+    <div>
+      <Navbar />
+    </div>
+  );
 }

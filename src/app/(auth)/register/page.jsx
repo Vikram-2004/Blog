@@ -32,6 +32,7 @@ const Page = () => {
         uid: auth?.currentUser?.uid,
         username: auth?.currentUser?.displayName,
       });
+      localStorage.setItem("isAuth", true);
       window.location.pathname = "/";
     } catch (error) {
       console.log(error);
@@ -46,19 +47,13 @@ const Page = () => {
           uid: auth?.currentUser?.uid,
           username: userName,
         });
+        localStorage.setItem("isAuth", true);
         window.location.pathname = "/";
       } else {
         alert("password musht have more than or equals to 8 characters");
       }
     } catch (error) {
       console.log(error);
-    }
-  };
-  const logout = async () => {
-    try {
-      await signOut(auth);
-    } catch (err) {
-      console.error(err);
     }
   };
   return (
@@ -91,8 +86,12 @@ const Page = () => {
             />
           </div>
           <div className="flex justify-between">
-            <Button label="Register" onClick={signIn} />
-            <Button label="Google" onClick={signInGoogle} />
+            <div className="w-[45%] mb-8">
+              <Button label="Register" onClick={signIn} />
+            </div>
+            <div className="w-[45%] mb-8">
+              <Button label="Google" onClick={signInGoogle} />
+            </div>
           </div>
 
           <p className="text-white text-center ">
@@ -104,7 +103,6 @@ const Page = () => {
         </div>
       </div>
       <button onClick={handleHidden}>clickme</button>
-      <button onClick={logout}>logout</button>
     </div>
   );
 };

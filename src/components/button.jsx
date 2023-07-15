@@ -1,4 +1,4 @@
-const Button = ({ label, onClick }) => {
+const Button = ({ label, onClick, width }) => {
   return (
     <button
       className="text-white 
@@ -7,11 +7,10 @@ const Button = ({ label, onClick }) => {
     py-2 
     rounded-md
     bg-neutral-700 
-    mb-8
     hover:text-neutral-300
     hover:bg-black
      z-10
-     w-[45%]
+     w-full
      hover:outline
      hover:outline-1
      hover:outline-white
