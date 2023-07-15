@@ -47,7 +47,7 @@ const Page = () => {
 
   return (
     <div className="bg-slate-50 overflow-x-hidden h-screen w-screen bg-[url('/images/beach.jpg')] bg-cover bg-center bg-no-repeat ">
-      <h1 className="text-4xl text-black font-semibold mb-20 ml-20 mt-6">
+      <h1 className="text-4xl text-black font-semibold mb-32 ml-20 mt-6">
         BLOG.
       </h1>
 

@@ -16,7 +16,7 @@ const Page = () => {
     if (!authorization) {
       window.location.pathname = "/login";
     }
-  });
+  }, []);
 
   const createPost = async () => {
     await addDoc(postsCollectionRef, {
