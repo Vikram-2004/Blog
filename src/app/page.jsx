@@ -1,3 +1,7 @@
+"use client";
+import { auth } from "@/config/firebase";
+
 export default function Home() {
-  return <p>hello</p>;
+  console.log(auth?.currentUser?.displayName);
+  return <div>hello {auth?.currentUser?.displayName}</div>;
 }

@@ -10,9 +10,11 @@ const Button = ({ label, onClick }) => {
     mb-8
     hover:text-neutral-300
     hover:bg-black
-     
      z-10
-     w-[85%]
+     w-[45%]
+     hover:outline
+     hover:outline-1
+     hover:outline-white
     "
       onClick={onClick}
     >
