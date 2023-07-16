@@ -31,15 +31,12 @@ const Page = () => {
     await addDoc(postsCollectionRef, {
       title,
       context,
-      username: auth?.currentUser?.displayName,
       date,
       time,
+      userID: auth?.currentUser?.uid,
+      username: auth?.currentUser?.displayName,
     });
   };
-
-  useEffect(() => {
-    createPost();
-  }, []);
 
   return (
     <div>

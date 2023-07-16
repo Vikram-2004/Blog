@@ -1,22 +1,30 @@
 "use client";
 import Card from "@/components/Card";
 import Navbar from "@/components/Navbar";
-import { db } from "@/config/firebase";
-import { collection, getDocs } from "firebase/firestore";
+import { db, auth } from "@/config/firebase";
+import { collection, getDocs, orderBy, query, where } from "firebase/firestore";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
 export default function Home() {
   const [posts, setPosts] = useState([]);
-
+  console.log(auth?.currentUser);
   const postsCollectionRef = collection(db, "posts");
+
   const getPosts = async () => {
     try {
-      const data = await getDocs(postsCollectionRef);
+      const q = query(
+        postsCollectionRef,
+        where("userID", "==", localStorage.getItem("uid")),
+        orderBy("date", "desc"),
+        orderBy("time", "desc")
+      );
+      const data = await getDocs(q);
       const filteredData = data.docs.map((doc) => ({
         ...doc.data(),
         id: doc.id,
       }));
+      console.log(filteredData);
       setPosts(filteredData);
     } catch (err) {
       console.log(err);
@@ -34,15 +42,23 @@ export default function Home() {
     getPosts();
   }, []);
 
+  if (!posts) {
+    return (
+      <div className="flex justify-center">
+        <h1 className="text-3xl font-semibold mt-[20vh]">loading</h1>
+      </div>
+    );
+  }
+
   return (
     <div className="overflow-x-hidden">
       <Navbar />
       <div className="px-[7vw] flex">
         <div className=" w-[10vw] flex flex-col pr-8 text-xl gap-4 pt-[5vh] h-[93vh] border-r-2 border-slate-950 ">
-          <Link href="/profile" className=" border-b-2 border-slate-600">
+          <Link href="/" className=" border-b-2 border-slate-600">
             Profile
           </Link>
-          <Link href="/explore" className=" border-b-2 border-slate-600">
+          <Link href="/" className=" border-b-2 border-slate-600">
             Explore
           </Link>
           <Link href="/createpost" className=" border-b-2 border-slate-600">
@@ -58,8 +74,8 @@ export default function Home() {
                     title={post.title}
                     context={post.context}
                     username={post.username}
-                    date={posts.date}
-                    time={posts.time}
+                    date={post.date}
+                    time={post.time}
                   />
                 </div>
               );

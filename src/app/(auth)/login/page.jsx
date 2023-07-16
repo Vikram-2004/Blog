@@ -20,6 +20,7 @@ const Page = () => {
     try {
       await signInWithEmailAndPassword(auth, email, password);
       localStorage.setItem("isAuth", true);
+      localStorage.setItem("uid", auth?.currentUser?.uid);
       window.location.pathname = "/";
     } catch (err) {
       console.log(err);
@@ -29,6 +30,7 @@ const Page = () => {
     try {
       await signInWithPopup(auth, googleProvider);
       localStorage.setItem("isAuth", true);
+      localStorage.setItem("uid", auth?.currentUser?.uid);
       window.location.pathname = "/";
     } catch (err) {
       console.error(err);

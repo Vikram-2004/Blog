@@ -22,6 +22,8 @@ const Page = () => {
     try {
       await signInWithPopup(auth, googleProvider);
       localStorage.setItem("isAuth", true);
+      localStorage.setItem("uid", auth?.currentUser?.uid);
+      localStorage.setItem("displayName", userName);
       window.location.pathname = "/";
     } catch (error) {
       console.log(error);
@@ -33,7 +35,7 @@ const Page = () => {
         console.log(email, password);
         await createUserWithEmailAndPassword(auth, email, password);
         localStorage.setItem("isAuth", true);
-        localStorage.setItem("displayName", userName);
+        localStorage.setItem("uid", auth?.currentUser?.uid);
         window.location.pathname = "/";
       } else {
         alert("password musht have more than or equals to 8 characters");
