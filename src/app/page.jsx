@@ -1,36 +1,44 @@
 "use client";
+import Card from "@/components/Card";
 import Navbar from "@/components/Navbar";
-import Card from "@/components/card";
-import { auth, db } from "@/config/firebase";
+import { db } from "@/config/firebase";
 import { collection, getDocs } from "firebase/firestore";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
 export default function Home() {
-  const [users, setUsers] = useState([]);
-  const userCollectionRef = collection(db, "users");
+  const [posts, setPosts] = useState([]);
+
+  const postsCollectionRef = collection(db, "posts");
+  const getPosts = async () => {
+    try {
+      const data = await getDocs(postsCollectionRef);
+      const filteredData = data.docs.map((doc) => ({
+        ...doc.data(),
+        id: doc.id,
+      }));
+      setPosts(filteredData);
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
   useEffect(() => {
     let authorization = localStorage.getItem("isAuth");
     if (!authorization) {
       window.location.pathname = "/login";
     }
-    const getUsers = async () => {
-      try {
-        const data = await getDocs(userCollectionRef);
-        const filteredUsers = data.docs.map((doc) => ({ ...doc.data() }));
-        setUsers(filteredUsers);
-      } catch (err) {
-        console.error(err);
-      }
-    };
-    getUsers();
-  }, [userCollectionRef]);
+  }, []);
+
+  useEffect(() => {
+    getPosts();
+  }, []);
+
   return (
-    <div>
+    <div className="overflow-x-hidden">
       <Navbar />
       <div className="px-[7vw] flex">
-        <div className=" w-[10vw] flex flex-col pr-4 text-xl gap-4 pt-[7vh] h-[93vh] border-r-2 border-slate-400">
+        <div className=" w-[10vw] flex flex-col pr-8 text-xl gap-4 pt-[5vh] h-[93vh] border-r-2 border-slate-950 ">
           <Link href="/profile" className=" border-b-2 border-slate-600">
             Profile
           </Link>
@@ -41,18 +49,25 @@ export default function Home() {
             CreatePost
           </Link>
         </div>
-        <div className="w-[60vw] h-[93vh] flex justify-center">
-          <Card title="helo" />
+        <div className="w-[60vw] max-h-[93vh] flex justify-center overflow-y-scroll">
+          <div className="mt-[5vh]">
+            {posts.map((post) => {
+              return (
+                <div className=" pb-12" key={post.id}>
+                  <Card
+                    title={post.title}
+                    context={post.context}
+                    username={post.username}
+                    date={posts.date}
+                    time={posts.time}
+                  />
+                </div>
+              );
+            })}
+          </div>
         </div>
-        <div className="w-[15vw] pt-[7vh] border-l-2 border-slate-400 p-8">
+        <div className="w-[15vw] pt-[5vh] p-8">
           <h1 className="text-2xl underline underline-offset-2 mb-2">Users</h1>
-          {users.map((user) => {
-            return (
-              <p key={user.uid} className="mb-1">
-                {user.username}
-              </p>
-            );
-          })}
         </div>
       </div>
     </div>

@@ -1,10 +1,10 @@
 "use client";
-import Input from "@/components/Input";
 import Navbar from "@/components/Navbar";
 import Button from "@/components/button";
 import { useState, useEffect } from "react";
 import { auth, db } from "@/config/firebase";
 import { addDoc, collection } from "firebase/firestore";
+import Link from "next/link";
 
 const Page = () => {
   const [title, setTitle] = useState("");
@@ -19,13 +19,28 @@ const Page = () => {
   }, []);
 
   const createPost = async () => {
+    let today = new Date();
+    let date =
+      today.getFullYear() +
+      "-" +
+      (today.getMonth() + 1) +
+      "-" +
+      today.getDate();
+    let time =
+      today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
     await addDoc(postsCollectionRef, {
       title,
       context,
-      uid: auth?.currentUser?.uid,
+      username: auth?.currentUser?.displayName,
+      date,
+      time,
     });
-    window.location.pathname = "/";
   };
+
+  useEffect(() => {
+    createPost();
+  }, []);
+
   return (
     <div>
       <Navbar />
@@ -51,7 +66,9 @@ const Page = () => {
           </div>
           <div className="w-full mt-8 flex ">
             <div className="w-[40%]">
-              <Button label="Create Post" onClick={createPost} />
+              <Link href="/">
+                <Button label="Create Post" onClick={createPost} />
+              </Link>
             </div>
           </div>
         </div>

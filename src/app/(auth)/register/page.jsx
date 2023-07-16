@@ -1,15 +1,10 @@
 "use client";
-import { auth, googleProvider, db } from "@/config/firebase";
+import { auth, googleProvider } from "@/config/firebase";
 import Link from "next/link";
 import Button from "@/components/button";
 import Input from "@/components/Input";
-import { addDoc, collection } from "firebase/firestore";
 import { useState } from "react";
-import {
-  createUserWithEmailAndPassword,
-  signInWithPopup,
-  signOut,
-} from "firebase/auth";
+import { createUserWithEmailAndPassword, signInWithPopup } from "firebase/auth";
 
 const Page = () => {
   const [email, setEmail] = useState("");
@@ -23,15 +18,9 @@ const Page = () => {
     });
   };
   console.log(auth?.currentUser);
-  const usersCollectionRef = collection(db, "users");
   const signInGoogle = async () => {
     try {
       await signInWithPopup(auth, googleProvider);
-      console.log(auth?.currentUser);
-      await addDoc(usersCollectionRef, {
-        uid: auth?.currentUser?.uid,
-        username: auth?.currentUser?.displayName,
-      });
       localStorage.setItem("isAuth", true);
       window.location.pathname = "/";
     } catch (error) {
@@ -43,11 +32,8 @@ const Page = () => {
       if (password.length >= 8) {
         console.log(email, password);
         await createUserWithEmailAndPassword(auth, email, password);
-        await addDoc(usersCollectionRef, {
-          uid: auth?.currentUser?.uid,
-          username: userName,
-        });
         localStorage.setItem("isAuth", true);
+        localStorage.setItem("displayName", userName);
         window.location.pathname = "/";
       } else {
         alert("password musht have more than or equals to 8 characters");

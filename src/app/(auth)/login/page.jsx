@@ -1,13 +1,7 @@
 "use client";
 import Input from "@/components/Input";
 import { auth, googleProvider } from "../../../config/firebase";
-import {
-  signInWithEmailAndPassword,
-  signInWithPopup,
-  signOut,
-  setPersistence,
-  browserLocalPersistence,
-} from "firebase/auth";
+import { signInWithEmailAndPassword, signInWithPopup } from "firebase/auth";
 import { useState } from "react";
 import Link from "next/link";
 import Button from "@/components/button";
@@ -16,7 +10,6 @@ const Page = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isHidden, setIsHidden] = useState("password");
-  console.log(auth?.currentUser);
 
   const handleHidden = () => {
     setIsHidden((currentValue) => {
@@ -27,7 +20,6 @@ const Page = () => {
     try {
       await signInWithEmailAndPassword(auth, email, password);
       localStorage.setItem("isAuth", true);
-      console.log(auth?.currentUser);
       window.location.pathname = "/";
     } catch (err) {
       console.log(err);
@@ -35,11 +27,9 @@ const Page = () => {
   };
   const signInWithGoogle = async () => {
     try {
-      await setPersistence(auth, browserLocalPersistence);
       await signInWithPopup(auth, googleProvider);
       localStorage.setItem("isAuth", true);
       window.location.pathname = "/";
-      console.log(auth?.currentUser);
     } catch (err) {
       console.error(err);
     }
