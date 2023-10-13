@@ -38,13 +38,13 @@ const Page = () => {
   };
 
   return (
-    <div className="bg-slate-50 overflow-x-hidden h-screen w-screen bg-[url('/images/beach.jpg')] bg-cover bg-center bg-no-repeat ">
+    <div className="bg-slate-50 overflow-x-hidden h-screen w-screen  bg-cover bg-center bg-no-repeat ">
       <h1 className="text-4xl text-black font-semibold mb-32 ml-20 mt-6">
         BLOG.
       </h1>
 
       <div className="flex justify-center pb-[25vh]">
-        <div className=" bg-black lg:w-1/4 rounded-lg px-16 py-16 self-center bg-opacity-75">
+        <div className=" bg-black lg:w-1/4 rounded-lg px-16 py-16 self-center ">
           <h1 className="text-white text-3xl font-semibold mb-8">Sign in</h1>
           <div className="flex flex-col gap-8 rounded-md mb-8">
             <Input

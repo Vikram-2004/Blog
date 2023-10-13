@@ -1,5 +1,5 @@
 "use client";
-import Card from "@/components/Card";
+import Card from "@/components/card";
 import Navbar from "@/components/Navbar";
 import { db, auth } from "@/config/firebase";
 import { collection, getDocs, orderBy, query, where } from "firebase/firestore";
@@ -15,9 +15,7 @@ export default function Home() {
     try {
       const q = query(
         postsCollectionRef,
-        where("userID", "==", localStorage.getItem("uid")),
-        orderBy("date", "desc"),
-        orderBy("time", "desc")
+        where("userID", "==", localStorage.getItem("uid"))
       );
       const data = await getDocs(q);
       const filteredData = data.docs.map((doc) => ({
@@ -81,9 +79,6 @@ export default function Home() {
               );
             })}
           </div>
-        </div>
-        <div className="w-[15vw] pt-[5vh] p-8">
-          <h1 className="text-2xl underline underline-offset-2 mb-2">Users</h1>
         </div>
       </div>
     </div>
